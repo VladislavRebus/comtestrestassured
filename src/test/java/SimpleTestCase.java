@@ -21,7 +21,10 @@ public class SimpleTestCase {
     @Test
     public void testFollowers() {
         User[] followers = userController.getFollowersByUser("VladislavRebus");
-        Assert.assertTrue(followers.length == 0);
+        Assert.assertEquals(followers.length, 0);
+        System.out.println("окончание");
 
     }
 }
+
+//проверка на ноль так, как у меня пока никого на Git в followers
