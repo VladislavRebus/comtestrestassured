@@ -1,18 +1,27 @@
+import controllers.UserController;
 import models.User;
-import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 public class SimpleTestCase {
+    private UserController userController;
+
+    @BeforeTest
+    public void setUp() {
+         userController = new UserController();
+    }
+
     @Test
-    public void testUserInfoResponse () {
-        //RestTemplate позволяет делать различные запросы
-        RestTemplate restTemplate = new RestTemplate();
-        //здесь применили наш новоый созданный класс User Models
-        User user = restTemplate.getForObject("https://api.github.com/users/VladislavRebus", User.class);
-        //System.out.println(user);
-        //проверка на соответсвие
-        Assert.assertTrue(user.getHtml_url().contains("https://github.com/VladislavRebus"));
+    public void testUserInfoResponse() {
+        User remoteUser = userController.getUserByUsername("VladislavRebus");
+        Assert.assertTrue(remoteUser.getHtml_url().contains("https://github.com/VladislavRebus"));
+    }
+
+    @Test
+    public void testFollowers() {
+        User[] followers = userController.getFollowersByUser("VladislavRebus");
+        Assert.assertTrue(followers.length == 0);
 
     }
 }
